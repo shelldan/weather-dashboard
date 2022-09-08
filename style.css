@@ -52,6 +52,11 @@ body{
     font-weight: 500;
 }
 
+#city-list{
+    display:flex;
+    flex-direction: column;
+}
+
 .section{
     display:flex;
     flex-direction:column;
@@ -59,9 +64,14 @@ body{
 
 #main-dashboard{
     border: 1px solid black;
-    width:1000%; /*will update later*/ 
+    width:150%; /*will update later*/ 
     line-height:2.8;
     margin:10%;
+}
+
+#city-header{
+    display:flex;
+    flex-direction:row;
 }
 
 #city-name{
@@ -69,11 +79,17 @@ body{
     font-size:30px;
 }
 
+#main-uv-div{
+    display:flex;
+    flex-direction:row;
+}
+
+
 #supplement-header{
     font-weight:500;
     font-size:30px;
     margin:10%;
-    width:1000%;
+    width:150%;
 }
 
 #supplement-dashboard{
@@ -81,7 +97,7 @@ body{
     flex-direction:row;
     justify-content:flex-start;
     margin:10%;
-    width:1000%;
+    width:150%;
 }
 
 .day-one-dashboard,

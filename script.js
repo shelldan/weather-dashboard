@@ -18,6 +18,7 @@ var city;
 var enterCityName = document.getElementById('enter-city-name')
 var searchButton = document.getElementById('search-button')
 var sectionEl = document.querySelector('.section')
+var cityListEl = document.getElementById('city-list')
 
 
 var formSubmitHandler = function(event){
@@ -25,66 +26,393 @@ var formSubmitHandler = function(event){
     
     var city = enterCityName.value.trim();
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&exclude=hourly,daily" +"&appid=" + APIKey + "&units=imperial";
-
-    //var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid=1d060c627d59790d7956cfb8a086aaa8"
     
-    fetch(queryURL)
+    //var queryURL = "https://api.openweathermap.org/data/3.0/onecall?q=" + city + "&exclude=hourly,daily" +"&appid=" + APIKey + "&units=imperial";
+    
+
+
+    fetch(queryURL)    
     //.then(response => console.log(response))
     .then(function (response) {
         return response.json();
       })
     .then(function (data) {
         console.log(data);
-      
+
+        //Main City 
         var mainDivEl = document.createElement('div')
         mainDivEl.setAttribute('id','main-dashboard')
+
+        var cityHeader =document.createElement('div')
+        cityHeader.setAttribute('id','city-header')
 
         var mainCityName = document.createElement('header')
         mainCityName.setAttribute('id','city-name')
 
-        var mainTemp = document.createElement("p")
+        var mainCityWeatherIcon = document.createElement('img')
+        mainCityWeatherIcon.setAttribute('id','mainWeatherIcon')
+
+        var mainCityIcon = data.weather[0].icon
+
+        var mainTemp = document.createElement('p')
         mainTemp.setAttribute('id','temp')
 
-        // var cityName = document.createElement('header')
-        // cityName.setAttribute('id','city-name')
+        var mainWind = document.createElement('p')
+        mainWind.setAttribute('id','wind')
 
-        // var temp =document.createElement('p')
-        // temp.setAttribute('id','temp')
+        var mainHumidity = document.createElement('p')
+        mainHumidity.setAttribute('id','humidity')
 
-        // var wind = document.createElement('p')
-        // wind.setAttribute('id','wind')
+        var mainUVIndexDiv = document.createElement('div')
+        mainUVIndexDiv.setAttribute('id','main-uv-div')
 
-        // var humidity = document.createElement('p')
-        // humidity.setAttribute('id','humidity')
+        var mainUVIndex = document.createElement('p')
+        mainUVIndex.setAttribute('id','uv-index')
 
-        // var UVIndex = document.createElement('p')
-        // UVIndex.setAttribute('id','uv-index')
+        var mainUVIndexValue = document.createElement('p')
+        mainUVIndexValue.setAttribute('id','uv-index-value')
+
+        var lat = data.coord.lat
+        var lon = data.coord.lon
+
+
 
         sectionEl.appendChild(mainDivEl)
-        mainDivEl.appendChild(mainCityName)
-        mainCityName.appendChild(mainTemp)
-        // mainDashboard.appendChild(cityName)
-        // cityName.appendChild(temp)
-        // temp.appendChild(wind)
-        // wind.appendChild(humidity)
-        // humidity.appendChild(UVIndex)
+        //mainDivEl.appendChild(mainCityName)
+        mainDivEl.appendChild(cityHeader)
+        mainDivEl.appendChild(mainTemp)
+        mainDivEl.appendChild(mainWind)
+        mainDivEl.appendChild(mainHumidity)
+        mainDivEl.appendChild(mainUVIndexDiv)
 
-        mainCityName.textContent = city;
-        mainTemp.textContent = data.main.temp;
-        // temp.textContent = data.main.temp;
-        // wind.textContent = data.wind.speed;
-        // humidity.textContent = data.main.humidity;
-        // UVIndex.textContent = ;
+        cityHeader.appendChild(mainCityName)
+        cityHeader.appendChild(mainCityWeatherIcon)
+
+        mainUVIndexDiv.appendChild(mainUVIndex)
+        mainUVIndexDiv.appendChild(mainUVIndexValue)
+
+        var mainDayUnix = data.dt
+
+        mainCityName.textContent = city + " ("+moment.unix(mainDayUnix).format('M/D/YYYY') + ") " 
+        mainCityWeatherIcon.src ='http://openweathermap.org/img/wn/' + mainCityIcon + '@2x.png' 
+        //data.weather[0].icon; // need to add the date and the icon
+        
+        mainTemp.textContent = 'Temp: ' + data.main.temp + ' °F';
+        mainWind.textContent = 'Wind: ' + data.wind.speed + ' MPH'
+        mainHumidity.textContent = 'Humidity: ' + data.main.humidity +' %'
+
+        var keyValue = data.name || []
+        var keyName = {
+            currentCity: city + " ("+moment.unix(mainDayUnix).format('M/D/YYYY') + ") "
+        }
+
+        var UVIndexURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + lat + "&lon=" + lon;
+        fetch(UVIndexURL)
+        .then(function(UVIndexResponse){
+            return UVIndexResponse.json()
+        })
+        .then(function(UVIndexData){
+            console.log(UVIndexData)
+
+            mainUVIndex.textContent = 'UV Index: ' 
+            mainUVIndexValue.textContent = UVIndexData.value
+
+            if(UVIndexData.value>=0 && UVIndexData.value<=4){
+                mainUVIndexValue.style.background = 'green'
+            } else if(UVIndexData.value>4 && UVIndexData.value<=8){
+                mainUVIndexValue.style.background = 'yellow'
+            } else(
+                mainUVIndexValue.style.background = 'red'
+            )
+        })
+
+        //sectionEl.textContent = '' // where to clear all the data? meaning only one time 
     
+        
+        //5-Day Forecast: 
+        // var supplementDiv = document.createElement('div')
+        // supplementDiv.setAttribute('id','supplement-header')
+
+        // var fiveDayForecastHeader = document.createElement('header')
+        // fiveDayForecastHeader.setAttribute('id','five-day-forecast')
+
+        // sectionEl.appendChild(supplementDiv)
+        // supplementDiv.appendChild(fiveDayForecastHeader)
+
+        // fiveDayForecastHeader.textContent = '5-Day Forecast:'
+
+        
+        //5-Day Forecast: Day 1, 2, 3, 4, 5 
+
+        var fiveDayUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat='+ lat + '&lon=' + lon + '&appid=' + APIKey + "&units=imperial"
+        fetch(fiveDayUrl)
+        .then(function(fiveDayResponse){
+            return fiveDayResponse.json()
+        })
+        .then(function(fiveDayData){
+            console.log(fiveDayData)
+
+
+            var header = document.getElementById('supplement-header')
+            if (header){
+                header.innerHTML = '' //if there is header on the screen, it is already there, and remove it 
+            }
+
+            var supplementDiv = document.createElement('div')
+            supplementDiv.setAttribute('id','supplement-header')
+
+            var fiveDayForecastHeader = document.createElement('header')
+            fiveDayForecastHeader.setAttribute('id','five-day-forecast')
+
+            sectionEl.appendChild(supplementDiv)
+            supplementDiv.appendChild(fiveDayForecastHeader)
+
+            fiveDayForecastHeader.textContent = '5-Day Forecast:'
+
+
+
+            //Day 1 
+            var supplementDiv = document.createElement('div')
+            supplementDiv.setAttribute('id','supplement-dashboard')
+
+            var dayOneDashboard = document.createElement('div')
+            dayOneDashboard.setAttribute('class','day-one-dashboard') // change from id to class 
+
+            var dayOneHeader = document.createElement('header')
+            dayOneHeader.setAttribute('id','day-one')
+
+
+            var dayOneWeatherIcon = document.createElement('img')
+            dayOneWeatherIcon.setAttribute('id','day-one-weather-icon')
+            
+            var dayOneTemp = document.createElement('p')
+            dayOneTemp.setAttribute('id','day-one-temp')
+
+            var dayOneWind = document.createElement('p')
+            dayOneWind.setAttribute('id','day-one-wind')
+
+            var dayOneHumidity = document.createElement('p')
+            dayOneHumidity.setAttribute('id','day-one-humidity')
+
+            sectionEl.appendChild(supplementDiv)
+            supplementDiv.appendChild(dayOneDashboard)
+            dayOneDashboard.appendChild(dayOneHeader)
+            dayOneDashboard.appendChild(dayOneWeatherIcon)
+            dayOneDashboard.appendChild(dayOneTemp)
+            dayOneDashboard.appendChild(dayOneWind)
+            dayOneDashboard.appendChild(dayOneHumidity)
+
+            var dayOneUnix = fiveDayData.list[0].dt
+            var dayOneWeatherIcon = fiveDayData.list[0].weather[0].icon
+
+            dayOneHeader.textContent = moment.unix(dayOneUnix).format('M/D/YYYY')
+            var dayOneIcon = document.getElementById('day-one-weather-icon') //add img 
+            dayOneIcon.src ='http://openweathermap.org/img/wn/' + dayOneWeatherIcon + '@2x.png' //add img
+            dayOneTemp.textContent = 'Temp: ' + fiveDayData.list[0].main.temp + ' °F'// need to add the icon before here 
+            dayOneWind.textContent = 'Wind: ' + fiveDayData.list[0].wind.speed + ' MPH'
+            dayOneHumidity.textContent = 'Humidity: ' + fiveDayData.list[0].main.humidity + ' %'
+            
+                        
+            //Day 2 
+
+            var dayTwoDashboard = document.createElement('div')
+            dayTwoDashboard.setAttribute('class','day-two-dashboard')
+
+            var dayTwoHeader = document.createElement('header')
+            dayTwoHeader.setAttribute('id','day-two')
+            
+
+            var dayTwoWeatherIcon = document.createElement('img')
+            dayTwoWeatherIcon.setAttribute('id','day-two-weather-icon')
+
+            var dayTwoTemp = document.createElement('p')
+            dayTwoTemp.setAttribute('id','day-two-temp')
+
+            var dayTwoWind = document.createElement('p')
+            dayTwoWind.setAttribute('id','day-two-wind')
+
+            var dayTwoHumidity = document.createElement('p')
+            dayTwoHumidity.setAttribute('id','day-two-humidity')
+
+            supplementDiv.appendChild(dayTwoDashboard)
+            dayTwoDashboard.appendChild(dayTwoHeader)
+            dayTwoDashboard.appendChild(dayTwoWeatherIcon)
+            dayTwoDashboard.appendChild(dayTwoTemp)
+            dayTwoDashboard.appendChild(dayTwoWind)
+            dayTwoDashboard.appendChild(dayTwoHumidity)
+
+            var dayTwoUnix = fiveDayData.list[8].dt
+            var dayTwoWeatherIcon = fiveDayData.list[8].weather[0].icon
+
+            dayTwoHeader.textContent = moment.unix(dayTwoUnix).format('M/D/YYYY')//might need to use moment to update it! 
+            var dayTwoIcon = document.getElementById('day-two-weather-icon') //add img 
+            dayTwoIcon.src ='http://openweathermap.org/img/wn/' + dayTwoWeatherIcon + '@2x.png' //add img
+            dayTwoTemp.textContent = 'Temp: ' + fiveDayData.list[8].main.temp + ' °F'// need to add the icon before here 
+            dayTwoWind.textContent = 'Wind: ' + fiveDayData.list[8].wind.speed + ' MPH'
+            dayTwoHumidity.textContent = 'Humidity: ' + fiveDayData.list[8].main.humidity + ' %'
+            
+            
+            //Day 3 
+
+            var dayThreeDashboard = document.createElement('div')
+            dayThreeDashboard.setAttribute('class','day-three-dashboard')
+
+            var dayThreeHeader = document.createElement('header')
+            dayThreeHeader.setAttribute('id','day-three')
+
+
+            var dayThreeWeatherIcon = document.createElement('img')
+            dayThreeWeatherIcon.setAttribute('id','day-three-weather-icon')
+
+            var dayThreeTemp = document.createElement('p')
+            dayThreeTemp.setAttribute('id','day-three-temp')
+
+            var dayThreeWind = document.createElement('p')
+            dayThreeWind.setAttribute('id','day-three-wind')
+
+            var dayThreeHumidity = document.createElement('p')
+            dayThreeHumidity.setAttribute('id','day-three-humidity')
+
+            supplementDiv.appendChild(dayThreeDashboard)
+            dayThreeDashboard.appendChild(dayThreeHeader)
+            dayThreeDashboard.appendChild(dayThreeWeatherIcon)
+            dayThreeDashboard.appendChild(dayThreeTemp)
+            dayThreeDashboard.appendChild(dayThreeWind)
+            dayThreeDashboard.appendChild(dayThreeHumidity)
+
+            var dayThreeUnix = fiveDayData.list[16].dt
+            var dayThreeWeatherIcon = fiveDayData.list[16].weather[0].icon
+
+            dayThreeHeader.textContent = moment.unix(dayThreeUnix).format('M/D/YYYY')//might need to use moment to update it! 
+            var dayThreeIcon = document.getElementById('day-three-weather-icon') //add img 
+            dayThreeIcon.src ='http://openweathermap.org/img/wn/' + dayThreeWeatherIcon + '@2x.png' //add img
+            dayThreeTemp.textContent = 'Temp: ' + fiveDayData.list[16].main.temp + ' °F'// need to add the icon before here 
+            dayThreeWind.textContent = 'Wind: ' + fiveDayData.list[16].wind.speed + ' MPH'
+            dayThreeHumidity.textContent = 'Humidity: ' + fiveDayData.list[16].main.humidity + ' %'
+                        
+
+            //Day 4 
+
+            var dayFourDashboard = document.createElement('div')
+            dayFourDashboard.setAttribute('class','day-four-dashboard')
+
+            var dayFourHeader = document.createElement('header')
+            dayFourHeader.setAttribute('id','day-four')
+
+
+            var dayFourWeatherIcon = document.createElement('img')
+            dayFourWeatherIcon.setAttribute('id','day-four-weather-icon')
+
+            var dayFourTemp = document.createElement('p')
+            dayFourTemp.setAttribute('id','day-four-temp')
+
+            var dayFourWind = document.createElement('p')
+            dayFourWind.setAttribute('id','day-four-wind')
+
+            var dayFourHumidity = document.createElement('p')
+            dayFourHumidity.setAttribute('id','day-four-humidity')
+
+            supplementDiv.appendChild(dayFourDashboard)
+            dayFourDashboard.appendChild(dayFourHeader)
+            dayFourDashboard.appendChild(dayFourWeatherIcon)
+            dayFourDashboard.appendChild(dayFourTemp)
+            dayFourDashboard.appendChild(dayFourWind)
+            dayFourDashboard.appendChild(dayFourHumidity)
+
+            var dayFourUnix = fiveDayData.list[24].dt
+            var dayFourWeatherIcon = fiveDayData.list[24].weather[0].icon
+
+            dayFourHeader.textContent = moment.unix(dayFourUnix).format('M/D/YYYY') //might need to use moment to update it! 
+            var dayFourIcon = document.getElementById('day-four-weather-icon') //add img 
+            dayFourIcon.src ='http://openweathermap.org/img/wn/' + dayFourWeatherIcon + '@2x.png' //add img
+            dayFourTemp.textContent = 'Temp: ' + fiveDayData.list[24].main.temp + ' °F'// need to add the icon before here 
+            dayFourWind.textContent = 'Wind: ' + fiveDayData.list[24].wind.speed + ' MPH'
+            dayFourHumidity.textContent = 'Humidity: ' + fiveDayData.list[24].main.humidity + ' %'
+        
+            
+            
+            //Day 5 
+
+            var dayFiveDashboard = document.createElement('div')
+            dayFiveDashboard.setAttribute('class','day-five-dashboard')
+
+            var dayFiveHeader = document.createElement('header')
+            dayFiveHeader.setAttribute('id','day-five')
+
+
+            var dayFiveWeatherIcon = document.createElement('img')
+            dayFiveWeatherIcon.setAttribute('id','day-five-weather-icon')
+
+            var dayFiveTemp = document.createElement('p')
+            dayFiveTemp.setAttribute('id','day-five-temp')
+
+            var dayFiveWind = document.createElement('p')
+            dayFiveWind.setAttribute('id','day-five-wind')
+
+            var dayFiveHumidity = document.createElement('p')
+            dayFiveHumidity.setAttribute('id','day-five-humidity')
+
+            supplementDiv.appendChild(dayFiveDashboard)
+            dayFiveDashboard.appendChild(dayFiveHeader)
+            dayFiveDashboard.appendChild(dayFiveWeatherIcon)
+            dayFiveDashboard.appendChild(dayFiveTemp)
+            dayFiveDashboard.appendChild(dayFiveWind)
+            dayFiveDashboard.appendChild(dayFiveHumidity)
+
+            var dayFiveUnix = fiveDayData.list[32].dt
+            var dayFiveWeatherIcon = fiveDayData.list[32].weather[0].icon
+
+            dayFiveHeader.textContent = moment.unix(dayFiveUnix).format('M/D/YYYY') //might need to use moment to update it! 
+            var dayFiveIcon = document.getElementById('day-five-weather-icon') //add img 
+            dayFiveIcon.src ='http://openweathermap.org/img/wn/' + dayFiveWeatherIcon + '@2x.png' //add img
+            dayFiveTemp.textContent = 'Temp: ' + fiveDayData.list[32].main.temp + ' °F'// need to add the icon before here 
+            dayFiveWind.textContent = 'Wind: ' + fiveDayData.list[32].wind.speed + ' MPH'
+            dayFiveHumidity.textContent = 'Humidity: ' + fiveDayData.list[32].main.humidity + ' %'
+        
+
+            //local storage 
+
+            console.log(keyValue)
+            localStorage.setItem(keyValue,JSON.stringify(keyName))
+
+            for(var i = 0; i<keyValue.length; i++){
+                var newCityButton = document.createElement('button')
+                newCityButton.setAttribute('id','new-city-button')
+                newCityButton.textContent = keyValue
+                cityListEl.appendChild(newCityButton)
+            }
+
+        })
     });
 
+    //local storage saved to search history 
+
+    //var savedCity = JSON.parse(localStorage.getItem("savedCity")) || [];
+
+    //localStorage.setItem('savedCity',JSON.stringify('savedCity'))
+
+    //cityListEl.innerHTML = 'Saved History'
+
+    //var savedCity = JSON.parse(localStorage.getItem('savedCity')) || [];
+
+    // for(var i=0; i<savedCity.length; i++){
+    //     var newCityButton = document.createElement('li')
+    //     //newCityButton.textContent = savedCity[i].name // check what is the property name
+    //     cityListEl.appendChild(newCityButton)
+        
+    // }
 
 
 }
+
+
+
 
 searchButton.addEventListener('click',formSubmitHandler)
 
 
 
+//if city = blank, alert ('Please enter a Github username')
 
-//UV index = ultraviolet Index 
+
+

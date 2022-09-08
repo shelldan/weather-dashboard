@@ -18,25 +18,35 @@
             <input type="text" placeholder="Please enter city name" id="enter-city-name">
             <button id="search-button">Search</button>
             <hr>
-            <ul id="city-list"></ul>
+            <div id="city-list">
+                
+            </div>
         </aside>
 
         <section class="section">
             <!-- <div id="main-dashboard">
-                <header id="city-name">test header</header>
+                <div id="city-header">
+                    <header id="city-name">City</header>
+                    <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" id="mainWeatherIcon">
+                </div>
                 <p id="temp">Temp: </p>
                 <p id="wind">Wind: </p>
                 <p id="humidity">Humidity: </p>
-                <p id="uv-index">UV Index: </p>            
-            </div> -->
+                <div id="main-uv-div">
+                    <p id="uv-index">UV Index: </p>
+                    <p id="uv-index-value"></p>                      
+                </div>
+          
+            </div>
 
-            <!-- <div id="supplement-header">
+            <div id="supplement-header">
                 <header id="five-day-forecast">5-Day Forecast</header>
             </div>
 
             <div id="supplement-dashboard">
                 <div class="day-one-dashboard">
                     <header id="day-one">test 1</header>
+                    <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" id="day-one-weather-icon">
                     <p id="day-one-temp">test 1</p>
                     <p id="day-one-wind">test 1</p>
                     <p id="day-one-humidity">test 1</p>
@@ -44,6 +54,7 @@
 
                 <div class="day-two-dashboard">
                     <header id="day-two">test 2</header>
+                    <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" id="day-two-weather-icon">
                     <p id="day-two-temp">test 2</p>
                     <p id="day-two-wind">test 2</p>
                     <p id="day-two-humidity">test 2</p>
@@ -51,6 +62,7 @@
 
                 <div class="day-three-dashboard">
                     <header id="day-three">test 3</header>
+                    <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" id="day-three-weather-icon">
                     <p id="day-three-temp">test 3</p>
                     <p id="day-three-wind">test 3</p>
                     <p id="day-three-humidity">test 3</p>
@@ -58,6 +70,7 @@
 
                 <div class="day-four-dashboard">
                     <header id="day-four">test 4</header>
+                    <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" id="day-four-weather-icon">
                     <p id="day-four-temp">test 4</p>
                     <p id="day-four-wind">test 4</p>
                     <p id="day-four-humidity">test 4</p>
@@ -65,13 +78,14 @@
 
                 <div class="day-five-dashboard">
                     <header id="day-five">test 5</header>
+                    <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" id="day-five-weather-icon">
                     <p id="day-five-temp">test 5</p>
                     <p id="day-five-wind">test 5</p>
                     <p id="day-five-humidity">test 5</p>
-                </div> -->
+                </div>
 
 
-            </div>
+            </div> -->
 
         </section>
     </main>
@@ -79,7 +93,7 @@
 
 
 
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
     <script src="./script.js"></script>
 
 </body>
