@@ -11,7 +11,7 @@
 // THEN I am again presented with current and future conditions for that city
 
 
-//weather dashboard API key: 1d060c627d59790d7956cfb8a086aaa8
+
 var APIKey = "1d060c627d59790d7956cfb8a086aaa8";
 var city;
 //var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=imperial";
@@ -26,8 +26,6 @@ var formSubmitHandler = function(event){
     
     var city = enterCityName.value.trim();
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&exclude=hourly,daily" +"&appid=" + APIKey + "&units=imperial";
-    
-    //var queryURL = "https://api.openweathermap.org/data/3.0/onecall?q=" + city + "&exclude=hourly,daily" +"&appid=" + APIKey + "&units=imperial";
     
 
 
@@ -101,10 +99,17 @@ var formSubmitHandler = function(event){
         mainWind.textContent = 'Wind: ' + data.wind.speed + ' MPH'
         mainHumidity.textContent = 'Humidity: ' + data.main.humidity +' %'
 
-        var keyValue = data.name || []
-        var keyName = {
-            currentCity: city + " ("+moment.unix(mainDayUnix).format('M/D/YYYY') + ") "
+        // var keyValue = data.name || []
+        // var keyName = {
+        //     currentCity: city + " ("+moment.unix(mainDayUnix).format('M/D/YYYY') + ") "
+        // }
+
+        var cities = [];
+
+        function storedCityArray(){
+            localStorage.setItem("cities",JSON.stringify(cities))
         }
+
 
         var UVIndexURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + lat + "&lon=" + lon;
         fetch(UVIndexURL)
@@ -125,21 +130,6 @@ var formSubmitHandler = function(event){
                 mainUVIndexValue.style.background = 'red'
             )
         })
-
-        //sectionEl.textContent = '' // where to clear all the data? meaning only one time 
-    
-        
-        //5-Day Forecast: 
-        // var supplementDiv = document.createElement('div')
-        // supplementDiv.setAttribute('id','supplement-header')
-
-        // var fiveDayForecastHeader = document.createElement('header')
-        // fiveDayForecastHeader.setAttribute('id','five-day-forecast')
-
-        // sectionEl.appendChild(supplementDiv)
-        // supplementDiv.appendChild(fiveDayForecastHeader)
-
-        // fiveDayForecastHeader.textContent = '5-Day Forecast:'
 
         
         //5-Day Forecast: Day 1, 2, 3, 4, 5 
@@ -372,36 +362,19 @@ var formSubmitHandler = function(event){
 
             //local storage 
 
-            console.log(keyValue)
-            localStorage.setItem(keyValue,JSON.stringify(keyName))
+            // console.log(keyValue)
+            // localStorage.setItem(keyValue,JSON.stringify(keyName))
 
-            for(var i = 0; i<keyValue.length; i++){
-                var newCityButton = document.createElement('button')
-                newCityButton.setAttribute('id','new-city-button')
-                newCityButton.textContent = keyValue
-                cityListEl.appendChild(newCityButton)
-            }
+            // for(var i = 0; i<keyValue.length; i++){
+            //     var newCityButton = document.createElement('button')
+            //     newCityButton.setAttribute('id','new-city-button')
+            //     newCityButton.textContent = keyValue
+            //     cityListEl.appendChild(newCityButton)
+            // }
+
 
         })
     });
-
-    //local storage saved to search history 
-
-    //var savedCity = JSON.parse(localStorage.getItem("savedCity")) || [];
-
-    //localStorage.setItem('savedCity',JSON.stringify('savedCity'))
-
-    //cityListEl.innerHTML = 'Saved History'
-
-    //var savedCity = JSON.parse(localStorage.getItem('savedCity')) || [];
-
-    // for(var i=0; i<savedCity.length; i++){
-    //     var newCityButton = document.createElement('li')
-    //     //newCityButton.textContent = savedCity[i].name // check what is the property name
-    //     cityListEl.appendChild(newCityButton)
-        
-    // }
-
 
 }
 
