@@ -19,12 +19,12 @@ var enterCityName = document.getElementById('enter-city-name')
 var searchButton = document.getElementById('search-button')
 var sectionEl = document.querySelector('.section')
 var cityListEl = document.getElementById('city-list')
+var cities = [];
 
-
-var formSubmitHandler = function(event){
-    event.preventDefault();
+var formSubmitHandler = function(city){
+    // event.preventDefault();
     
-    var city = enterCityName.value.trim();
+    // var city = enterCityName.value.trim();
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&exclude=hourly,daily" +"&appid=" + APIKey + "&units=imperial";
     
 
@@ -36,6 +36,8 @@ var formSubmitHandler = function(event){
       })
     .then(function (data) {
         console.log(data);
+
+        sectionEl.innerHTML = ''
 
         //Main City 
         var mainDivEl = document.createElement('div')
@@ -61,14 +63,14 @@ var formSubmitHandler = function(event){
         var mainHumidity = document.createElement('p')
         mainHumidity.setAttribute('id','humidity')
 
-        var mainUVIndexDiv = document.createElement('div')
-        mainUVIndexDiv.setAttribute('id','main-uv-div')
+        // var mainUVIndexDiv = document.createElement('div')
+        // mainUVIndexDiv.setAttribute('id','main-uv-div')
 
-        var mainUVIndex = document.createElement('p')
-        mainUVIndex.setAttribute('id','uv-index')
+        // var mainUVIndex = document.createElement('p')
+        // mainUVIndex.setAttribute('id','uv-index')
 
-        var mainUVIndexValue = document.createElement('p')
-        mainUVIndexValue.setAttribute('id','uv-index-value')
+        // var mainUVIndexValue = document.createElement('p')
+        // mainUVIndexValue.setAttribute('id','uv-index-value')
 
         var lat = data.coord.lat
         var lon = data.coord.lon
@@ -81,13 +83,13 @@ var formSubmitHandler = function(event){
         mainDivEl.appendChild(mainTemp)
         mainDivEl.appendChild(mainWind)
         mainDivEl.appendChild(mainHumidity)
-        mainDivEl.appendChild(mainUVIndexDiv)
+        // mainDivEl.appendChild(mainUVIndexDiv)
 
         cityHeader.appendChild(mainCityName)
         cityHeader.appendChild(mainCityWeatherIcon)
 
-        mainUVIndexDiv.appendChild(mainUVIndex)
-        mainUVIndexDiv.appendChild(mainUVIndexValue)
+        // mainUVIndexDiv.appendChild(mainUVIndex)
+        // mainUVIndexDiv.appendChild(mainUVIndexValue)
 
         var mainDayUnix = data.dt
 
@@ -98,17 +100,26 @@ var formSubmitHandler = function(event){
         mainTemp.textContent = 'Temp: ' + data.main.temp + ' °F';
         mainWind.textContent = 'Wind: ' + data.wind.speed + ' MPH'
         mainHumidity.textContent = 'Humidity: ' + data.main.humidity +' %'
+        getUVIndex(lat,lon)
+        get5Days(lat,lon)
+        
+        cities.push(city) //cities push (city)
+            localStorage.setItem('cities',JSON.stringify(cities))
 
-        // var keyValue = data.name || []
-        // var keyName = {
-        //     currentCity: city + " ("+moment.unix(mainDayUnix).format('M/D/YYYY') + ") "
-        // }
+            var newCityButton = document.createElement('button')
+            newCityButton.setAttribute('id','new-city-button')
+            newCityButton.textContent = city
+            newCityButton.addEventListener('click',function(event){
+                savedCities(event)
+            })
 
-        var cities = [];
+            cityListEl.appendChild(newCityButton)
+    })
+    }
 
-        function storedCityArray(){
-            localStorage.setItem("cities",JSON.stringify(cities))
-        }
+
+
+    function getUVIndex (lat,lon){
 
 
         var UVIndexURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + lat + "&lon=" + lon;
@@ -118,6 +129,21 @@ var formSubmitHandler = function(event){
         })
         .then(function(UVIndexData){
             console.log(UVIndexData)
+            let mainDivEl = document.getElementById('main-dashboard')
+
+            var mainUVIndexDiv = document.createElement('div')
+            mainUVIndexDiv.setAttribute('id','main-uv-div')
+    
+            var mainUVIndex = document.createElement('p')
+            mainUVIndex.setAttribute('id','uv-index')
+    
+            var mainUVIndexValue = document.createElement('p')
+            mainUVIndexValue.setAttribute('id','uv-index-value')
+
+            mainDivEl.appendChild(mainUVIndexDiv)
+
+            mainUVIndexDiv.appendChild(mainUVIndex)
+            mainUVIndexDiv.appendChild(mainUVIndexValue)
 
             mainUVIndex.textContent = 'UV Index: ' 
             mainUVIndexValue.textContent = UVIndexData.value
@@ -131,7 +157,10 @@ var formSubmitHandler = function(event){
             )
         })
 
-        
+    }
+
+    
+    function get5Days(lat,lon){
         //5-Day Forecast: Day 1, 2, 3, 4, 5 
 
         var fiveDayUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat='+ lat + '&lon=' + lon + '&appid=' + APIKey + "&units=imperial"
@@ -143,10 +172,10 @@ var formSubmitHandler = function(event){
             console.log(fiveDayData)
 
 
-            var header = document.getElementById('supplement-header')
-            if (header){
-                header.innerHTML = '' //if there is header on the screen, it is already there, and remove it 
-            }
+            // var header = document.getElementById('supplement-header')
+            // if (header){
+            //     header.innerHTML = '' //if there is header on the screen, it is already there, and remove it 
+            // }
 
             var supplementDiv = document.createElement('div')
             supplementDiv.setAttribute('id','supplement-header')
@@ -362,26 +391,62 @@ var formSubmitHandler = function(event){
 
             //local storage 
 
-            // console.log(keyValue)
-            // localStorage.setItem(keyValue,JSON.stringify(keyName))
+            // cities.push(city) //cities push (city)
+            // localStorage.setItem('cities',JSON.stringify(cities))
 
-            // for(var i = 0; i<keyValue.length; i++){
+            // var newCityButton = document.createElement('button')
+            // newCityButton.setAttribute('id','new-city-button')
+            // newCityButton.textContent = city
+            // newCityButton.addEventListener('click',function(event){
+            //     savedCities(event)
+            // })
+
+            // cityListEl.appendChild(newCityButton)
+
+
+
+            // for(var i = 0; i<cities.length; i++){
             //     var newCityButton = document.createElement('button')
             //     newCityButton.setAttribute('id','new-city-button')
-            //     newCityButton.textContent = keyValue
+            //     newCityButton.textContent = cities
             //     cityListEl.appendChild(newCityButton)
             // }
 
+            //every time we search the city, it will save to the local storage
+            //we create a localStorage function
+            //we added the city to the cities [] array
+            //add the city to the localStorage
+            //when we click the city on the research history
+            //it will retrieve the city's weather 
+
+
+
 
         })
-    });
+    }
 
+
+//need to create a eventlistener
+//when click the button
+//it will retrieve the local storage data
+
+//which the button the user pick 
+
+function savedCities (event){
+    console.log('click')
+    console.log(event)
+    console.log(event.target.textContent)
+    formSubmitHandler(event.target.textContent)
+    
 }
 
 
-
-
-searchButton.addEventListener('click',formSubmitHandler)
+searchButton.addEventListener('click',function(event){
+    event.preventDefault();
+    
+    var city = enterCityName.value.trim();
+    formSubmitHandler(city)
+})
 
 
 
