@@ -103,7 +103,15 @@ var formSubmitHandler = function(city){
         getUVIndex(lat,lon)
         get5Days(lat,lon)
         
-        cities.push(city) //cities push (city)
+        console.log(city)
+        console.log(cities)
+        var doesCityExist = cities.findIndex(function(element){
+            return element===city
+        }) // check the city is in the array, if it is, we don't want to add to the array
+        console.log(doesCityExist)
+
+        if(doesCityExist === -1){
+            cities.push(city) //cities push (city)
             localStorage.setItem('cities',JSON.stringify(cities))
 
             var newCityButton = document.createElement('button')
@@ -113,7 +121,8 @@ var formSubmitHandler = function(city){
                 savedCities(event)
             })
 
-            cityListEl.appendChild(newCityButton)
+            cityListEl.appendChild(newCityButton) 
+        }
     })
     }
 
@@ -444,7 +453,7 @@ function savedCities (event){
 searchButton.addEventListener('click',function(event){
     event.preventDefault();
     
-    var city = enterCityName.value.trim();
+    var city = enterCityName.value.trim().toLowerCase();
     formSubmitHandler(city)
 })
 
