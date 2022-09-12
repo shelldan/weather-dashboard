@@ -123,6 +123,19 @@ var formSubmitHandler = function(city){
 
             cityListEl.appendChild(newCityButton) 
         }
+
+        if(doesCityExist){
+            cities = localStorage.getItem('cities',JSON.parse(cities))
+            console.log(cities)
+            
+            for (var i =0; i < cities.length; i++){
+                var newCityButton = document.createElement('button')
+                newCityButton.setAttribute('id','new-city-button')
+                newCityButton.textContent = city[i]
+            }
+
+
+        }
     })
     }
 
@@ -398,35 +411,6 @@ var formSubmitHandler = function(city){
             dayFiveHumidity.textContent = 'Humidity: ' + fiveDayData.list[32].main.humidity + ' %'
         
 
-            //local storage 
-
-            // cities.push(city) //cities push (city)
-            // localStorage.setItem('cities',JSON.stringify(cities))
-
-            // var newCityButton = document.createElement('button')
-            // newCityButton.setAttribute('id','new-city-button')
-            // newCityButton.textContent = city
-            // newCityButton.addEventListener('click',function(event){
-            //     savedCities(event)
-            // })
-
-            // cityListEl.appendChild(newCityButton)
-
-
-
-            // for(var i = 0; i<cities.length; i++){
-            //     var newCityButton = document.createElement('button')
-            //     newCityButton.setAttribute('id','new-city-button')
-            //     newCityButton.textContent = cities
-            //     cityListEl.appendChild(newCityButton)
-            // }
-
-            //every time we search the city, it will save to the local storage
-            //we create a localStorage function
-            //we added the city to the cities [] array
-            //add the city to the localStorage
-            //when we click the city on the research history
-            //it will retrieve the city's weather 
 
 
 
