@@ -19,6 +19,7 @@ var enterCityName = document.getElementById('enter-city-name')
 var searchButton = document.getElementById('search-button')
 var sectionEl = document.querySelector('.section')
 var cityListEl = document.getElementById('city-list')
+var asideEl = document.querySelector('.aside')
 var cities = [];
 
 var formSubmitHandler = function(city){
@@ -124,20 +125,21 @@ var formSubmitHandler = function(city){
             cityListEl.appendChild(newCityButton) 
         }
 
-        if(doesCityExist){
-            cities = localStorage.getItem('cities',JSON.parse(cities))
-            console.log(cities)
+        // if(doesCityExist){
+        //     cities = localStorage.getItem('cities',JSON.parse(cities))
+        //     console.log(cities)
             
-            for (var i =0; i < cities.length; i++){
-                var newCityButton = document.createElement('button')
-                newCityButton.setAttribute('id','new-city-button')
-                newCityButton.textContent = city[i]
-            }
+        //     for (var i =0; i < cities.length; i++){
+        //         var newCityButton = document.createElement('button')
+        //         newCityButton.setAttribute('id','new-city-button')
+        //         newCityButton.textContent = city[i]
+        //     }
+        // }
 
 
-        }
     })
     }
+
 
 
 
@@ -442,6 +444,25 @@ searchButton.addEventListener('click',function(event){
 })
 
 
+function toGetLocalStorage(){
+    cities = JSON.parse(localStorage.getItem('cities'))
+    console.log(cities)
+
+    for (var i = 0; i<cities.length; i++){
+        var newCityButton = document.createElement('button')
+        newCityButton.setAttribute('id','new-city-button')
+        newCityButton.textContent = cities[i]
+
+        asideEl.appendChild(newCityButton)
+
+        newCityButton.addEventListener('click',function(event){
+            savedCities(event)
+        })
+
+    }
+}
+
+toGetLocalStorage()
 
 //if city = blank, alert ('Please enter a Github username')
 
