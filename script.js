@@ -106,34 +106,26 @@ var formSubmitHandler = function(city){
         
         console.log(city)
         console.log(cities)
-        var doesCityExist = cities.findIndex(function(element){
-            return element===city
-        }) // check the city is in the array, if it is, we don't want to add to the array
-        console.log(doesCityExist)
+        
+        saveLocalStorage(city)
+        // var doesCityExist = cities.findIndex(function(element){
+        //     return element=== city
+        // }) // check the city is in the array, if it is, we don't want to add to the array
 
-        if(doesCityExist === -1){
-            cities.push(city) //cities push (city)
-            localStorage.setItem('cities',JSON.stringify(cities))
+        // console.log(doesCityExist)
 
-            var newCityButton = document.createElement('button')
-            newCityButton.setAttribute('id','new-city-button')
-            newCityButton.textContent = city
-            newCityButton.addEventListener('click',function(event){
-                savedCities(event)
-            })
+        // if(doesCityExist === -1){
+        //     cities.push(city) //cities push (city)
+        //     localStorage.setItem('cities',JSON.stringify(cities))
 
-            cityListEl.appendChild(newCityButton) 
-        }
+        //     var newCityButton = document.createElement('button')
+        //     newCityButton.setAttribute('id','new-city-button')
+        //     newCityButton.textContent = city
+        //     newCityButton.addEventListener('click',function(event){
+        //         savedCities(event)
+        //     })
 
-        // if(doesCityExist){
-        //     cities = localStorage.getItem('cities',JSON.parse(cities))
-        //     console.log(cities)
-            
-        //     for (var i =0; i < cities.length; i++){
-        //         var newCityButton = document.createElement('button')
-        //         newCityButton.setAttribute('id','new-city-button')
-        //         newCityButton.textContent = city[i]
-        //     }
+        //     cityListEl.appendChild(newCityButton) 
         // }
 
 
@@ -421,18 +413,11 @@ var formSubmitHandler = function(city){
     }
 
 
-//need to create a eventlistener
-//when click the button
-//it will retrieve the local storage data
 
-//which the button the user pick 
-
-function savedCities (event){
-    console.log('click')
+function savedCities (event){ 
     console.log(event)
     console.log(event.target.textContent)
-    formSubmitHandler(event.target.textContent)
-    
+    formSubmitHandler(event.target.textContent)  
 }
 
 
@@ -443,28 +428,55 @@ searchButton.addEventListener('click',function(event){
     formSubmitHandler(city)
 })
 
+function saveLocalStorage(city){
+    var doesCityExist = cities.findIndex(function(element){
+    return element=== city
+    }) // check the city is in the array, if it is, we don't want to add to the array
 
-function toGetLocalStorage(){
-    cities = JSON.parse(localStorage.getItem('cities'))
-    console.log(cities)
+    console.log(doesCityExist)
 
-    for (var i = 0; i<cities.length; i++){
+    if(doesCityExist === -1){
+        cities.push(city) //cities push (city)
+        localStorage.setItem('cities',JSON.stringify(cities))
+
         var newCityButton = document.createElement('button')
         newCityButton.setAttribute('id','new-city-button')
-        newCityButton.textContent = cities[i]
-
-        asideEl.appendChild(newCityButton)
-
+        newCityButton.textContent = city
         newCityButton.addEventListener('click',function(event){
             savedCities(event)
         })
 
+        cityListEl.appendChild(newCityButton) 
     }
 }
 
-toGetLocalStorage() //after refresh page, it will call this function every time 
+function toGetLocalStorage(city){
+    cities = JSON.parse(localStorage.getItem('cities'))
+    //console.log(cities)
 
-//if city = blank, alert ('Please enter a Github username')
+    var doesCityExist = cities.findIndex(function(element){
+        return element=== city
+    })
 
+    for (var i = 0; i< cities.length; i++){
+        if (doesCityExist === -1){
+            cities.push(city)
+        }else{
+            var newCityButton = document.createElement('button')
+            newCityButton.setAttribute('id','new-city-button')
+            newCityButton.textContent = cities[i]
+
+            asideEl.appendChild(newCityButton)
+            newCityButton.addEventListener('click',function(event){
+                savedCities(event)
+            })
+        }
+    }
+}
+
+//saveLocalStorage()
+toGetLocalStorage()
+
+//if city = blank, alert ('Please enter a valid city name')
 
 
