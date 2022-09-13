@@ -474,7 +474,7 @@ function toGetLocalStorage(city){
     }
 }
 
-//saveLocalStorage()
+saveLocalStorage()
 toGetLocalStorage()
 
 //if city = blank, alert ('Please enter a valid city name')
