@@ -424,6 +424,21 @@ searchButton.addEventListener('click',function(event){
 })
 
 function saveLocalStorage(city){
+
+    if (!cities) {
+        cities = [city];
+        localStorage.setItem('cities',JSON.stringify(cities))
+
+        var newCityButton = document.createElement('button')
+        newCityButton.setAttribute('id','new-city-button')
+        newCityButton.textContent = city
+        newCityButton.addEventListener('click',function(event){
+            savedCities(event)
+        })
+
+        cityListEl.appendChild(newCityButton) 
+    }
+    
     var doesCityExist = cities.findIndex(function(element){
     return element=== city
     }) // check the city is in the array, if it is, we don't want to add to the array
@@ -465,5 +480,4 @@ function toGetLocalStorage(){
 toGetLocalStorage()
 
 //if city = blank, alert ('Please enter a valid city name')
-
 
