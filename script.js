@@ -462,7 +462,7 @@ function toGetLocalStorage(){
     }
 }
 
-toGetLocalStorage()
+toGetLocalStorage() //after refresh page, it will call this function every time 
 
 //if city = blank, alert ('Please enter a Github username')
 
