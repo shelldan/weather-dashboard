@@ -403,11 +403,6 @@ var formSubmitHandler = function(city){
             dayFiveTemp.textContent = 'Temp: ' + fiveDayData.list[32].main.temp + ' °F'// need to add the icon before here 
             dayFiveWind.textContent = 'Wind: ' + fiveDayData.list[32].wind.speed + ' MPH'
             dayFiveHumidity.textContent = 'Humidity: ' + fiveDayData.list[32].main.humidity + ' %'
-        
-
-
-
-
 
         })
     }
@@ -474,8 +469,8 @@ function toGetLocalStorage(city){
     }
 }
 
-saveLocalStorage()
-toGetLocalStorage()
+// saveLocalStorage()
+// toGetLocalStorage()
 
 //if city = blank, alert ('Please enter a valid city name')
 
