@@ -34,7 +34,7 @@ body{
 
 #search-for-a-city{
     font-size:30px;
-    font-weight:500;
+    font-weight:bold;
     line-height: 1.8;
 }
 
@@ -42,7 +42,7 @@ body{
     font-size:15px;
     line-height:1.8;
     margin-bottom:5%;
-    height:30px;
+    height:45px;
 }
 
 #search-button{
@@ -80,16 +80,19 @@ button{
     border: 1px solid black;
     width:150%; /*will update later*/ 
     line-height:2.8;
-    margin:10%;
+    margin-left:60px;
+    margin-top:35px;
+    margin-bottom:20px;
 }
 
 #city-header{
     display:flex;
     flex-direction:row;
+    align-items: center;
 }
 
 #city-name{
-    font-weight:500;
+    font-weight:bold;
     font-size:30px;
 }
 
@@ -100,13 +103,17 @@ button{
 
 #uv-index-value{
     border-radius: 5px;
-    height:30px;
+    height:40px;
+    margin-left:10px;
+    width:50px;
+    text-align: center;
 }
 
 #supplement-header{
-    font-weight:500;
+    font-weight:bold;
     font-size:30px;
-    margin:10%;
+    margin:10px;
+    margin-left:60px;
     width:150%;
 }
 
@@ -114,8 +121,9 @@ button{
     display:flex;
     flex-direction:row;
     justify-content:flex-start;
-    margin:10%;
+    margin:10px;
     width:150%;
+    margin-left: 60px;
 }
 
 .day-one-dashboard,
@@ -126,8 +134,22 @@ button{
 border:1px solid black;
 width:50%;
 line-height: 1.8;
-margin-right:1%;
+margin-right:10px;
 background:skyblue;
 color:white;
 font-weight:500;
+}
+
+#day-one,
+#day-two,
+#day-three,
+#day-four,
+#day-five{
+    font-weight:bold;
+    font-size:larger;
+}
+
+img{
+    height: 50px;
+    width: 50px;
 }
