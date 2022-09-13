@@ -105,7 +105,7 @@ var formSubmitHandler = function(city){
         get5Days(lat,lon)
         
         console.log(city)
-        console.log(cities)
+        //console.log(cities)
         
         saveLocalStorage(city)
         // var doesCityExist = cities.findIndex(function(element){
@@ -428,7 +428,7 @@ function saveLocalStorage(city){
     return element=== city
     }) // check the city is in the array, if it is, we don't want to add to the array
 
-    console.log(doesCityExist)
+    //console.log(doesCityExist)
 
     if(doesCityExist === -1){
         cities.push(city) //cities push (city)
@@ -445,32 +445,24 @@ function saveLocalStorage(city){
     }
 }
 
-function toGetLocalStorage(city){
+function toGetLocalStorage(){
     cities = JSON.parse(localStorage.getItem('cities'))
-    //console.log(cities)
-
-    var doesCityExist = cities.findIndex(function(element){
-        return element=== city
-    })
 
     for (var i = 0; i< cities.length; i++){
-        if (doesCityExist === -1){
-            cities.push(city)
-        }else{
-            var newCityButton = document.createElement('button')
-            newCityButton.setAttribute('id','new-city-button')
-            newCityButton.textContent = cities[i]
 
-            asideEl.appendChild(newCityButton)
-            newCityButton.addEventListener('click',function(event){
-                savedCities(event)
-            })
-        }
+        var newCityButton = document.createElement('button')
+        newCityButton.setAttribute('id','new-city-button')
+        newCityButton.textContent = cities[i]
+
+        asideEl.appendChild(newCityButton)
+        newCityButton.addEventListener('click',function(event){
+            savedCities(event)
+        })
+        
     }
 }
-
-// saveLocalStorage()
-// toGetLocalStorage()
+//saveLocalStorage()
+toGetLocalStorage()
 
 //if city = blank, alert ('Please enter a valid city name')
 
