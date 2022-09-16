@@ -26,7 +26,7 @@ var formSubmitHandler = function(city){
     // event.preventDefault();
     
     // var city = enterCityName.value.trim();
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&exclude=hourly,daily" +"&appid=" + APIKey + "&units=imperial";
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&exclude=hourly,daily" +"&appid=" + APIKey + "&units=imperial";
     
 
 
@@ -95,7 +95,7 @@ var formSubmitHandler = function(city){
         var mainDayUnix = data.dt
 
         mainCityName.textContent = city + " ("+moment.unix(mainDayUnix).format('M/D/YYYY') + ") " 
-        mainCityWeatherIcon.src ='http://openweathermap.org/img/wn/' + mainCityIcon + '@2x.png' 
+        mainCityWeatherIcon.src ='https://openweathermap.org/img/wn/' + mainCityIcon + '@2x.png' 
         //data.weather[0].icon; // need to add the date and the icon
         
         mainTemp.textContent = 'Temp: ' + data.main.temp + ' °F';
@@ -179,7 +179,7 @@ var formSubmitHandler = function(city){
     function get5Days(lat,lon){
         //5-Day Forecast: Day 1, 2, 3, 4, 5 
 
-        var fiveDayUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat='+ lat + '&lon=' + lon + '&appid=' + APIKey + "&units=imperial"
+        var fiveDayUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat='+ lat + '&lon=' + lon + '&appid=' + APIKey + "&units=imperial"
         fetch(fiveDayUrl)
         .then(function(fiveDayResponse){
             return fiveDayResponse.json()
@@ -242,7 +242,7 @@ var formSubmitHandler = function(city){
 
             dayOneHeader.textContent = moment.unix(dayOneUnix).format('M/D/YYYY')
             var dayOneIcon = document.getElementById('day-one-weather-icon') //add img 
-            dayOneIcon.src ='http://openweathermap.org/img/wn/' + dayOneWeatherIcon + '@2x.png' //add img
+            dayOneIcon.src ='https://openweathermap.org/img/wn/' + dayOneWeatherIcon + '@2x.png' //add img
             dayOneTemp.textContent = 'Temp: ' + fiveDayData.list[0].main.temp + ' °F'// need to add the icon before here 
             dayOneWind.textContent = 'Wind: ' + fiveDayData.list[0].wind.speed + ' MPH'
             dayOneHumidity.textContent = 'Humidity: ' + fiveDayData.list[0].main.humidity + ' %'
@@ -281,7 +281,7 @@ var formSubmitHandler = function(city){
 
             dayTwoHeader.textContent = moment.unix(dayTwoUnix).format('M/D/YYYY')//might need to use moment to update it! 
             var dayTwoIcon = document.getElementById('day-two-weather-icon') //add img 
-            dayTwoIcon.src ='http://openweathermap.org/img/wn/' + dayTwoWeatherIcon + '@2x.png' //add img
+            dayTwoIcon.src ='https://openweathermap.org/img/wn/' + dayTwoWeatherIcon + '@2x.png' //add img
             dayTwoTemp.textContent = 'Temp: ' + fiveDayData.list[8].main.temp + ' °F'// need to add the icon before here 
             dayTwoWind.textContent = 'Wind: ' + fiveDayData.list[8].wind.speed + ' MPH'
             dayTwoHumidity.textContent = 'Humidity: ' + fiveDayData.list[8].main.humidity + ' %'
@@ -320,7 +320,7 @@ var formSubmitHandler = function(city){
 
             dayThreeHeader.textContent = moment.unix(dayThreeUnix).format('M/D/YYYY')//might need to use moment to update it! 
             var dayThreeIcon = document.getElementById('day-three-weather-icon') //add img 
-            dayThreeIcon.src ='http://openweathermap.org/img/wn/' + dayThreeWeatherIcon + '@2x.png' //add img
+            dayThreeIcon.src ='https://openweathermap.org/img/wn/' + dayThreeWeatherIcon + '@2x.png' //add img
             dayThreeTemp.textContent = 'Temp: ' + fiveDayData.list[16].main.temp + ' °F'// need to add the icon before here 
             dayThreeWind.textContent = 'Wind: ' + fiveDayData.list[16].wind.speed + ' MPH'
             dayThreeHumidity.textContent = 'Humidity: ' + fiveDayData.list[16].main.humidity + ' %'
@@ -359,7 +359,7 @@ var formSubmitHandler = function(city){
 
             dayFourHeader.textContent = moment.unix(dayFourUnix).format('M/D/YYYY') //might need to use moment to update it! 
             var dayFourIcon = document.getElementById('day-four-weather-icon') //add img 
-            dayFourIcon.src ='http://openweathermap.org/img/wn/' + dayFourWeatherIcon + '@2x.png' //add img
+            dayFourIcon.src ='https://openweathermap.org/img/wn/' + dayFourWeatherIcon + '@2x.png' //add img
             dayFourTemp.textContent = 'Temp: ' + fiveDayData.list[24].main.temp + ' °F'// need to add the icon before here 
             dayFourWind.textContent = 'Wind: ' + fiveDayData.list[24].wind.speed + ' MPH'
             dayFourHumidity.textContent = 'Humidity: ' + fiveDayData.list[24].main.humidity + ' %'
@@ -399,7 +399,7 @@ var formSubmitHandler = function(city){
 
             dayFiveHeader.textContent = moment.unix(dayFiveUnix).format('M/D/YYYY') //might need to use moment to update it! 
             var dayFiveIcon = document.getElementById('day-five-weather-icon') //add img 
-            dayFiveIcon.src ='http://openweathermap.org/img/wn/' + dayFiveWeatherIcon + '@2x.png' //add img
+            dayFiveIcon.src ='https://openweathermap.org/img/wn/' + dayFiveWeatherIcon + '@2x.png' //add img
             dayFiveTemp.textContent = 'Temp: ' + fiveDayData.list[32].main.temp + ' °F'// need to add the icon before here 
             dayFiveWind.textContent = 'Wind: ' + fiveDayData.list[32].wind.speed + ' MPH'
             dayFiveHumidity.textContent = 'Humidity: ' + fiveDayData.list[32].main.humidity + ' %'
