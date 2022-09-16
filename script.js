@@ -105,29 +105,8 @@ var formSubmitHandler = function(city){
         get5Days(lat,lon)
         
         console.log(city)
-        //console.log(cities)
         
         saveLocalStorage(city)
-        // var doesCityExist = cities.findIndex(function(element){
-        //     return element=== city
-        // }) // check the city is in the array, if it is, we don't want to add to the array
-
-        // console.log(doesCityExist)
-
-        // if(doesCityExist === -1){
-        //     cities.push(city) //cities push (city)
-        //     localStorage.setItem('cities',JSON.stringify(cities))
-
-        //     var newCityButton = document.createElement('button')
-        //     newCityButton.setAttribute('id','new-city-button')
-        //     newCityButton.textContent = city
-        //     newCityButton.addEventListener('click',function(event){
-        //         savedCities(event)
-        //     })
-
-        //     cityListEl.appendChild(newCityButton) 
-        // }
-
 
     })
     }
@@ -186,12 +165,6 @@ var formSubmitHandler = function(city){
         })
         .then(function(fiveDayData){
             console.log(fiveDayData)
-
-
-            // var header = document.getElementById('supplement-header')
-            // if (header){
-            //     header.innerHTML = '' //if there is header on the screen, it is already there, and remove it 
-            // }
 
             var supplementDiv = document.createElement('div')
             supplementDiv.setAttribute('id','supplement-header')
@@ -443,7 +416,6 @@ function saveLocalStorage(city){
     return element=== city
     }) // check the city is in the array, if it is, we don't want to add to the array
 
-    //console.log(doesCityExist)
 
     if(doesCityExist === -1){
         cities.push(city) //cities push (city)
@@ -476,7 +448,8 @@ function toGetLocalStorage(){
         
     }
 }
-//saveLocalStorage()
+
+
 toGetLocalStorage()
 
 //if city = blank, alert ('Please enter a valid city name')
