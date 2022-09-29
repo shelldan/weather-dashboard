@@ -434,18 +434,24 @@ function saveLocalStorage(city){
 function toGetLocalStorage(){
     cities = JSON.parse(localStorage.getItem('cities'))
 
-    for (var i = 0; i< cities.length; i++){
+    if (cities === null){
+        cities === []
+    }else{
+            for (var i = 0; i< cities.length; i++){
 
-        var newCityButton = document.createElement('button')
-        newCityButton.setAttribute('id','new-city-button')
-        newCityButton.textContent = cities[i]
+            var newCityButton = document.createElement('button')
+            newCityButton.setAttribute('id','new-city-button')
+            newCityButton.textContent = cities[i]
 
-        asideEl.appendChild(newCityButton)
-        newCityButton.addEventListener('click',function(event){
-            savedCities(event)
-        })
+            asideEl.appendChild(newCityButton)
+            newCityButton.addEventListener('click',function(event){
+                savedCities(event)
+            })
         
+            }
     }
+
+
 }
 
 
