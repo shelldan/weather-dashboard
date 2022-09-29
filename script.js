@@ -14,7 +14,6 @@
 
 var APIKey = "1d060c627d59790d7956cfb8a086aaa8";
 var city;
-//var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=imperial";
 var enterCityName = document.getElementById('enter-city-name')
 var searchButton = document.getElementById('search-button')
 var sectionEl = document.querySelector('.section')
@@ -453,4 +452,3 @@ function toGetLocalStorage(){
 toGetLocalStorage()
 
 //if city = blank, alert ('Please enter a valid city name')
-
